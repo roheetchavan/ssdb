@@ -1,2 +1,2 @@
 # ssdb
-Simple Sqlite Database
+Simple Sqlite Database Implementation
