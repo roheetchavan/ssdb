@@ -22,6 +22,7 @@ get_new_buffer(void)
 
     return new_buff;
 }
+
 void
 read_input(InputBuffer* input_buffer)
 {
@@ -50,4 +51,49 @@ void
 print_db_prompt(void)
 {
     printf("db> ");
+}
+
+MetaCommandResult
+do_meta_command(InputBuffer* input_buffer)
+{
+	if(strcmp(input_buffer->buffer, ".exit") == 0)
+	{
+		clean_input_buffer(input_buffer);
+		printf("Closing db...\n");
+		exit(EXIT_SUCCESS);
+	}
+	return META_COMMAND_UNRECOGNZED;
+}
+
+PrepareResult
+prepare_statement(InputBuffer* input_buffer, Statement* statement)
+{
+	if(strncmp(input_buffer->buffer, "insert", strlen("insert")) == 0)
+	{
+		statement->type = STATEMENT_INSERT;
+		return PREPARE_SUCCESS;
+	}
+
+	if(strcmp(input_buffer->buffer, "select") == 0)
+	{
+		statement->type = STATEMENT_SELECT;
+		return PREPARE_SUCCESS;
+	}
+	return PREPARE_UNRECOGNIZED_STATEMENT;
+}
+
+void
+execute_statement(Statement* statement)
+{
+	switch(statement->type)
+	{
+		case STATEMENT_INSERT:
+			printf("this is where i insert\n");
+			break;
+		case STATEMENT_SELECT:
+			printf("this is where i select\n");
+			break;
+		default:
+			printf("Unrecognized statement type\n");
+	}
 }
